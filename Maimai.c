@@ -37,6 +37,6 @@ U16 Maimai_calc(Maimai* this){
 	if(sub > 255) sub = 255;
 	k = (1.0382E-3 * max - 6.3295E-1) * min + 1.1024E+2;
 	
-	luminance = sub / k;
+	luminance = sub / k * 100;
 	return (U16) luminance;
 }

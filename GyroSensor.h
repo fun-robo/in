@@ -22,6 +22,7 @@ typedef struct GyroSensor
 
 // 公開操作
 void GyroSensor_init(GyroSensor* this, SENSOR_PORT_T inputPort);
+void change_offset(GyroSensor* this, unsigned int offset);
 unsigned int GyroSensor_getAngularVelocity(GyroSensor* this);
 unsigned int GyroSensor_getOffset(GyroSensor* this);
 

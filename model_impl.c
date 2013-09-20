@@ -61,27 +61,76 @@ TASK(TaskMain)
 	UI_waitStart(&ui);
 
 	char phase = 0;
+	char phase2 = 0;
+	int runtime1 = 0;
 	// 4ms周期で、ライントレーサにトレース走行を依頼する
 	while(1)
 	{
 		if(UI_isEmergency(&ui))	break;
 
-		if(1){//goalしたら
-			phase = 1;
-		}
 
 		Maimai_store(&maimai, run_time);
 
 		switch(phase){
 			case 0:	
-							LineTracer_trace(&lineTracer, 70, run_time);
-							break;
+				LineTracer_trace(&lineTracer, 50, 1);
+				if(runtime1 > 2000){//goalしたら
+					ecrobot_sound_tone(349, 100, 100);
+					phase = 1;
+					runtime1 = 0;
+				}
+				runtime1 += 4;
+				break;
 			case 1:	
-							LineTracer_trace(&lineTracer, 30, )
+				switch(phase2){
+					case 0:
+							LineTracer_trace(&lineTracer, 10, 1);
+							Motor_tailControl(&tailMotor, 80);
+							if(runtime1 > 2000){//少し進んだら
+								ecrobot_sound_tone(349, 100, 100);
+								phase2 = 1;
+								runtime1 = 0;
+							}
+							runtime1 += 4;
+							break;
+					case 1:	
+						change_offset(&gyroSensor, 575);
+						LineTracer_trace(&lineTracer, 10, 1);
+						Motor_tailControl(&tailMotor, 80);
+						if(runtime1 > 10){//少し進んだら
+							ecrobot_sound_tone(349, 100, 100);
+							phase2 = 2;
+							runtime1 = 0;
+							change_offset(&gyroSensor, 585);
+						}
+						runtime1 += 4;
+						break;
+					case 2:	
+						Motor_tailControl(&tailMotor, 80);
+						if(runtime1 > 1000){//少したったら
+							ecrobot_sound_tone(349, 100, 100);
+							phase2 = 3;
+							runtime1 = 0;
+							LineTracer_changePID(&lineTracer, 0.55, 0.06, 0.07, get_TARGET_tail(&lineTracer));
+						}
+						runtime1+=4;
+						break;
+					case 3:	
+						Motor_tailControl(&tailMotor, 80);
+						LineTracer_trace_nonbalance(&lineTracer, 20, 1);
+						if(runtime1 > 2000){//少し進んだら
+							ecrobot_sound_tone(349, 100, 100);
+							phase2 = 3;
+							runtime1 = 0;
+						}
+						runtime1+=4;
+						break;
+				}
 			case 2:	
 							LookUpGate_start(&lookUpGate);
-			case 3:	
-			case 4:	
+			case 3:	break;
+			case 4:	break;
+			default:break;
 		}
 
 		run_time+=4;

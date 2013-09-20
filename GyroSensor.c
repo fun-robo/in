@@ -17,6 +17,10 @@ void GyroSensor_init(GyroSensor* this, SENSOR_PORT_T inputPort)
 	this->offset = GYRO_OFFSET;
 }
 
+void change_offset (GyroSensor* this, unsigned int offset){
+  this->offset = offset;
+}
+
 unsigned int GyroSensor_getAngularVelocity(GyroSensor* this)
 {
 	return ecrobot_get_gyro_sensor(this->inputPort);

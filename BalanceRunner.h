@@ -32,6 +32,7 @@ typedef struct BalanceRunner
 // 公開操作
 void BalanceRunner_init(BalanceRunner* this);
 void BalanceRunner_run(BalanceRunner* this, int turn, int forword);
+void NonBalanceRunner_run(BalanceRunner* this, int turn, int forword);
 
 #endif /*!defined(EA_37548F8E_C7BF_4044_9E50_5C184B895EEE__INCLUDED_)*/
 

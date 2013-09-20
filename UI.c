@@ -26,7 +26,10 @@ void UI_waitStart(UI* this)
 	while(1)
 	{
 		// 尻尾を立てて完全停止状態にする
-		Motor_tailControl(this->tailMotor, TAIL_ANGLE_STAND_UP);
+		if(flag_touch < 4 && flag_touch > 1)
+			Motor_tailControl(this->tailMotor, 80);
+		else
+			Motor_tailControl(this->tailMotor, TAIL_ANGLE_STAND_UP);
 		//点滅の輝度値を格納する
 		Maimai_store(this->maimai, run_time);
 
@@ -42,6 +45,16 @@ void UI_waitStart(UI* this)
 			else if(flag_touch == 1){
 				this->lineTracer->TARGET = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 2;
+			}
+			//2度目のボタン押下でスタート
+			else if(flag_touch == 2){
+				white = Maimai_calc(this->maimai);
+				flag_touch = 3;
+			}
+			//2度目のボタン押下でスタート
+			else if(flag_touch == 3){
+				this->lineTracer->TARGET_tail = (F32)((white + Maimai_calc(this->maimai)) / 2);
+				flag_touch = 4;
 			}
 			else{
 				Motor_tailControl(this->tailMotor, TAIL_ANGLE_DRIVE);
@@ -65,6 +78,12 @@ void UI_waitStart(UI* this)
 			display_string("white=");
 			display_int(white,1);
 		}else if(flag_touch == 2){
+			display_string("black=");
+			display_int(this->lineTracer->TARGET*2 - white,1);
+		}else if(flag_touch == 3){
+			display_string("white=");
+			display_int(white,1);
+		}else if(flag_touch == 4){
 			display_string("black=");
 			display_int(this->lineTracer->TARGET*2 - white,1);
 		}
