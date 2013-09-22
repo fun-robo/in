@@ -94,14 +94,14 @@ TASK(TaskMain)
 							runtime1 += 4;
 							break;
 					case 1:	
-						change_offset(&gyroSensor, 575);
+						GyroSensor_changeOffset(&gyroSensor, 575);
 						LineTracer_trace(&lineTracer, 10, 1);
 						Motor_tailControl(&tailMotor, 80);
 						if(runtime1 > 10){//少し進んだら
 							ecrobot_sound_tone(349, 100, 100);
 							phase2 = 2;
 							runtime1 = 0;
-							change_offset(&gyroSensor, 585);
+							GyroSensor_changeOffset(&gyroSensor, 585);
 						}
 						runtime1 += 4;
 						break;
