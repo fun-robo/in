@@ -55,7 +55,7 @@ void LineTracer_trace(LineTracer* this, int forword, int run_time)
 	//if(run_time < 10000) {
 	//	BalanceRunner_run(this->balanceRunner,0,100);
 	//} else {	
-		BalanceRunner_run(this->balanceRunner, pid_turn, forword);
+	BalanceRunner_run(this->balanceRunner, pid_turn, forword);
 	//}
 }
 

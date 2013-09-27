@@ -16,6 +16,7 @@
 #include "LookUpRunner.h"
 #include "LineReturn.h"
 #include "Maimai.h"
+#include "TailRunner.h"
 
 #include "kernel.h"
 #include "kernel_id.h"
@@ -37,6 +38,7 @@ LookUpRunner lookUpRunner;
 SonarSensor sonarSensor;
 Maimai maimai;
 LineReturn	lineReturn;
+TailRunner tailRunner;
 
 void ecrobot_device_initialize();
 void ecrobot_device_terminate();
@@ -61,7 +63,6 @@ TASK(TaskMain)
 	UI_waitStart(&ui);
 
 	char phase = 0;
-	char phase2 = 0;
 	int runtime1 = 0;
 	// 4ms周期で、ライントレーサにトレース走行を依頼する
 	while(1)
@@ -82,52 +83,9 @@ TASK(TaskMain)
 				runtime1 += 4;
 				break;
 			case 1:	
-				switch(phase2){
-					case 0:
-							LineTracer_trace(&lineTracer, 10, 1);
-							Motor_tailControl(&tailMotor, 80);
-							if(runtime1 > 2000){//少し進んだら
-								ecrobot_sound_tone(349, 100, 100);
-								phase2 = 1;
-								runtime1 = 0;
-							}
-							runtime1 += 4;
-							break;
-					case 1:	
-						change_offset(&gyroSensor, 575);
-						LineTracer_trace(&lineTracer, 10, 1);
-						Motor_tailControl(&tailMotor, 80);
-						if(runtime1 > 10){//少し進んだら
-							ecrobot_sound_tone(349, 100, 100);
-							phase2 = 2;
-							runtime1 = 0;
-							change_offset(&gyroSensor, 585);
-						}
-						runtime1 += 4;
-						break;
-					case 2:	
-						Motor_tailControl(&tailMotor, 80);
-						if(runtime1 > 1000){//少したったら
-							ecrobot_sound_tone(349, 100, 100);
-							phase2 = 3;
-							runtime1 = 0;
-							LineTracer_changePID(&lineTracer, 0.55, 0.06, 0.07, get_TARGET_tail(&lineTracer));
-						}
-						runtime1+=4;
-						break;
-					case 3:	
-						Motor_tailControl(&tailMotor, 80);
-						LineTracer_trace_nonbalance(&lineTracer, 20, 1);
-						if(runtime1 > 2000){//少し進んだら
-							ecrobot_sound_tone(349, 100, 100);
-							phase2 = 3;
-							runtime1 = 0;
-						}
-						runtime1+=4;
-						break;
-				}
-			case 2:	
-							LookUpGate_start(&lookUpGate);
+				TailRunner_run(&tailRunner, 30, 1);
+				break;
+			case 2:	break;
 			case 3:	break;
 			case 4:	break;
 			default:break;
@@ -231,6 +189,10 @@ void ecrobot_link(){
 	lineReturn.lineTracer = &lineTracer;
 
 	maimai.lightSensor = &lightSensor;
+
+	tailRunner.tailMotor = &tailMotor;
+	tailRunner.lineTracer = &lineTracer;
+	tailRunner.gyroSensor = &gyroSensor;
 }
 
 void ecrobot_init(){
@@ -251,6 +213,7 @@ void ecrobot_init(){
 	LookUpRunner_init(&lookUpRunner);
 	LineReturn_init(&lineReturn);
 	Maimai_init(&maimai);
+	TailRunner_init(&tailRunner);
 }
 
 

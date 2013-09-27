@@ -17,7 +17,7 @@ void GyroSensor_init(GyroSensor* this, SENSOR_PORT_T inputPort)
 	this->offset = GYRO_OFFSET;
 }
 
-void change_offset (GyroSensor* this, unsigned int offset){
+void GyroSensor_changeOffset (GyroSensor* this, unsigned int offset){
   this->offset = offset;
 }
 

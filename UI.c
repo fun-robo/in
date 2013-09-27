@@ -27,7 +27,7 @@ void UI_waitStart(UI* this)
 	{
 		// 尻尾を立てて完全停止状態にする
 		if(flag_touch < 4 && flag_touch > 1)
-			Motor_tailControl(this->tailMotor, 80);
+			Motor_tailControl(this->tailMotor, 70);
 		else
 			Motor_tailControl(this->tailMotor, TAIL_ANGLE_STAND_UP);
 		//点滅の輝度値を格納する
@@ -38,21 +38,25 @@ void UI_waitStart(UI* this)
 		if(count == 5){
 			//一度目のボタン押下でキャリブレーション
 			if(flag_touch == 0){
+				ecrobot_sound_tone(261, 100, 100);
 				white = Maimai_calc(this->maimai);
 				flag_touch = 1;
 			}
 			//2度目のボタン押下でスタート
 			else if(flag_touch == 1){
+				ecrobot_sound_tone(293, 100, 100);
 				this->lineTracer->TARGET = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 2;
 			}
 			//2度目のボタン押下でスタート
 			else if(flag_touch == 2){
+				ecrobot_sound_tone(329, 100, 100);
 				white = Maimai_calc(this->maimai);
 				flag_touch = 3;
 			}
 			//2度目のボタン押下でスタート
 			else if(flag_touch == 3){
+				ecrobot_sound_tone(349, 100, 100);
 				this->lineTracer->TARGET_tail = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 4;
 			}

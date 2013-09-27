@@ -1,5 +1,5 @@
-build/model_impl.o: model_impl.c LineTracer.h ColorJudgement.h Color.h \
-  LightSensor.h ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
+build/TailRunner.o: TailRunner.c TailRunner.h Motor.h \
+  ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/mytypes.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/interrupts.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/aic.h \
@@ -41,6 +41,5 @@ build/model_impl.o: model_impl.c LineTracer.h ColorJudgement.h Color.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/osek.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
-  BalanceRunner.h Direction.h GyroSensor.h Motor.h Maimai.h UI.h \
-  TouchSensor.h SonarSensor.h GarageIn.h Basic.h LookUpGate.h \
-  LookUpRunner.h LineReturn.h TailRunner.h kernel_id.h
+  LineTracer.h ColorJudgement.h Color.h LightSensor.h BalanceRunner.h \
+  Direction.h GyroSensor.h Maimai.h GyroSensor.c
