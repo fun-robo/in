@@ -83,11 +83,21 @@ TASK(TaskMain)
 				runtime1 += 4;
 				break;
 			case 1:	
-				TailRunner_run(&tailRunner, 30, 1);
+				if(LookUpGate_run(&lookUpGate)){
+					phase = 2;
+				}
 				break;
-			case 2:	break;
-			case 3:	break;
-			case 4:	break;
+			case 2:	
+				TailRunner_run(&tailRunner, 20, 1);
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
 			default:break;
 		}
 
@@ -119,8 +129,9 @@ void ecrobot_device_initialize()
 	// ⇒　光センサ赤色LEDをONにする
 	ecrobot_set_light_sensor_active(NXT_PORT_S3);
 	if(ecrobot_get_bt_status() == BT_NO_INIT){
-		ecrobot_set_bt_device_name("ET025");
+		ecrobot_set_bt_device_name("FUNROBO");
 	}
+	ecrobot_init_sonar_sensor(NXT_PORT_S2);
 	ecrobot_init_bt_slave("LEJOS-OSEK");
 }
 
@@ -174,10 +185,11 @@ void ecrobot_link(){
 	basic.lightSensor         = &lightSensor;
 	basic.ui				  = &ui;
 
-	lookUpGate.lineTracer = &lineTracer;
-	lookUpGate.lookUpRunner = &lookUpRunner;
+	lookUpGate.tailRunner = &tailRunner;
 	lookUpGate.sonarSensor = &sonarSensor;
-	lookUpGate.colorJudgement  = &colorJudgement;
+	lookUpGate.balanceRunner = &balanceRunner;
+	lookUpGate.rightMotor = &rightMotor;
+	lookUpGate.leftMotor = &leftMotor;
 
 	lookUpRunner.gyroSensor = &gyroSensor;
 	lookUpRunner.leftMotor = &leftMotor;

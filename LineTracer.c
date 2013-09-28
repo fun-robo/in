@@ -28,9 +28,9 @@ void LineTracer_init(LineTracer* this)
 	this->diff[1] = 0;
 	this->integral = 0;
 
-	this->KP = 0.55;
-	this->KI = 0.06;
-	this->KD = 0.07;
+	this->KP = 0.6;
+	this->KI = 0.08;
+	this->KD = 0.1;
 	this->TARGET = 630;
 
 	this->bright = 0;

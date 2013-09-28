@@ -31,7 +31,7 @@ void TailRunner_set_tailMotor(TailRunner* this)
   switch(this->phase){
     case 0:
       this->angle = 85;
-      LineTracer_trace(this->lineTracer, 10, 1);
+      LineTracer_trace(this->lineTracer, 20, 1);
       if(this->runtime > 2000){//少し進んだら
         ecrobot_sound_tone(349, 100, 100);
         this->phase = 1;
@@ -53,18 +53,18 @@ void TailRunner_set_tailMotor(TailRunner* this)
       break;
     case 2:
       this->angle = 85 - this->runtime/100;
-      if(this->runtime >= 1500){//少したったら
+      if(this->runtime >= 1800){//少したったら
         ecrobot_sound_tone(349, 100, 100);
         this->phase = 3;
         this->runtime = 0;
-        LineTracer_changePID(this->lineTracer, 0.55, 0.06, 0.07, get_TARGET_tail(this->lineTracer));
+        LineTracer_changePID(this->lineTracer, 0.6, 0.1, 0.1, get_TARGET_tail(this->lineTracer));
       }
       this->runtime+=4;
       break;
     case 3: 
-      this->angle = 70;
+      this->angle = 67;
       LineTracer_trace_nonbalance(this->lineTracer, 20, 1);
-      if(this->runtime > 2000){//少し進んだら
+      if(this->runtime > 1000){//少し進んだら
         ecrobot_sound_tone(349, 100, 100);
         this->phase = 4;
         this->runtime = 0;
