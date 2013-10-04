@@ -1,12 +1,7 @@
-/****************************************************
-*  UI.c                                         
-*  Created on: 2012/05/05 8:28:46                      
-*  Implementation of the Class UI       
-*  Original author: hiroyuki.watanabe                     
-****************************************************/
 
 #include "TailRunner.h"
 #include "LineTracer.h"
+#include "BalanceRunner.h"
 #include "Motor.h"
 #include "GyroSensor.c"
 
@@ -21,6 +16,14 @@ void TailRunner_run(TailRunner* this, int forward, int turn)//10,1
 {
   if(this->phase == 4){
     LineTracer_trace_nonbalance(this->lineTracer, forward, turn);
+  }
+  TailRunner_set_tailMotor(this);
+}
+
+void TailRunner_run_nonlinetrace(TailRunner* this, int turn, int forward)//10,1
+{
+  if(this->phase == 4){
+    NonBalanceRunner_run(this->balanceRunner, turn, forward);
   }
   TailRunner_set_tailMotor(this);
 }

@@ -21,6 +21,7 @@ typedef struct LookUpGate
   int runtime;
   long rightAngle;
   long leftAngle;
+  int turn;
 } LookUpGate;
 
 // 公開操作

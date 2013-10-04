@@ -12,6 +12,7 @@
 #include "LineTracer.h"
 #include "Maimai.h"
 #include "GyroSensor.h"
+#include "BalanceRunner.h"
 
 #define TAIL_ANGLE 70 /* 移動時の角度[度] */
 
@@ -21,6 +22,7 @@ typedef struct TailRunner
   Motor   *tailMotor;
   LineTracer  *lineTracer;
   GyroSensor *gyroSensor;
+  BalanceRunner *balanceRunner;
   int runtime;
   char phase;
   char angle;
@@ -29,6 +31,7 @@ typedef struct TailRunner
 // 公開操作
 void TailRunner_init(TailRunner* this);
 void TailRunner_run(TailRunner* this, int forward, int turn);
+void TailRunner_run_nonlinetrace(TailRunner* this, int turn, int forward);
 void TailRunner_set_tailMotor(TailRunner* this);
 
 #endif /*!defined(TAIL__INCLUDED_)*/
