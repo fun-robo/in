@@ -83,6 +83,7 @@ TASK(TaskMain)
 				runtime1 += 4;
 				break;
 			case 1:	
+
 				if(LookUpGate_run(&lookUpGate)){
 					phase = 2;
 				}

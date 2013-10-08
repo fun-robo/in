@@ -20,7 +20,7 @@ BOOL LookUpGate_run(LookUpGate* this)
 	long angleDiffL = Motor_getAngle(this->leftMotor) - this->leftAngle;
 	switch(this->phase){
 		case 0:
-			TailRunner_run(this->tailRunner, 0, 0);
+			TailRunner_run(this->tailRunner, 20, 1);
 			if(SonarSensor_sonarAlert(this->sonarSensor, 25) == 1){
 				this->phase = 1;
 				this->rightAngle = Motor_getAngle(this->rightMotor);
