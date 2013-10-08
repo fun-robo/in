@@ -28,10 +28,10 @@ void LineTracer_init(LineTracer* this)
 	this->diff[1] = 0;
 	this->integral = 0;
 
-	this->KP = 0.6;
-	this->KI = 0.08;
-	this->KD = 0.1;
-	this->TARGET = 630;
+	this->KP = 0.6;//試走会0.6;//0.66;//0.6;//0.66;
+	this->KI = 0.08;//試走会0.08;//0.07;//0.08;//0.07;
+	this->KD = 0.124;//試走会0.12;//0.1;//0.07;
+	this->TARGET = 120;
 
 	this->bright = 0;
 }
@@ -39,35 +39,11 @@ void LineTracer_init(LineTracer* this)
 // ライントレースを行う
 void LineTracer_trace(LineTracer* this, int forword, int run_time)
 {
-	//COLOR color;			// 路面の色
-	//DIRECTION direction;		// 走行体の向き
-	//
-	//// 路面の色を判定する
-	//color = ColorJudgement_judgeColor(this->colorJudgement);
-	//
-	//// 走行体の向きを計算する
-	//direction = LineTracer_calcDirection(this, color);
 	this->bright = Maimai_calc(this->maimai);
-
 	int pid_turn = run_time * (int)pid(this->bright, this->TARGET, this);
 
 	//倒立走行を行う
-	//if(run_time < 10000) {
-	//	BalanceRunner_run(this->balanceRunner,0,100);
-	//} else {	
 	BalanceRunner_run(this->balanceRunner, pid_turn, forword);
-	//}
-}
-
-void LineTracer_trace_nonbalance(LineTracer* this, int forword, int run_time)
-{
-	// 走行体の向きを計算する
-	this->bright = Maimai_calc(this->maimai);
-
-	int pid_turn = run_time * (int)pid(this->bright, this->TARGET, this);
-
-	NonBalanceRunner_run(this->balanceRunner, pid_turn, forword);
-
 }
 
 //pid係数及びtargetの値を変更する
@@ -79,6 +55,9 @@ void LineTracer_changePID(LineTracer* this, F32 p, F32 i, F32 d, F32 target)
 	this->TARGET = target; //デフォルト：580.0
 }
 
+F32 LineTracer_getTarget(LineTracer* this){
+	return this->TARGET;
+} 
 
 static DIRECTION LineTracer_calcDirection(LineTracer* this, COLOR color)
 {
@@ -94,7 +73,6 @@ static DIRECTION LineTracer_calcDirection(LineTracer* this, COLOR color)
 		return RIGHT;
 	}
 }
-
 
 static F32 pid(U16 sensor_val, U16 target_val,LineTracer *this)
 {
@@ -115,6 +93,22 @@ static F32 pid(U16 sensor_val, U16 target_val,LineTracer *this)
 	return (p + i + d);
 }
 
+U16 LineTracer_getBright(LineTracer *this)
+{
+	return this->bright;
+}
+
 F32 get_TARGET_tail(LineTracer *this){
 	return this->TARGET_tail;
+}
+
+void LineTracer_trace_nonbalance(LineTracer* this, int forword, int run_time)
+{
+	// 走行体の向きを計算する
+	this->bright = Maimai_calc(this->maimai);
+
+	int pid_turn = run_time * (int)pid(this->bright, this->TARGET, this);
+
+	NonBalanceRunner_run(this->balanceRunner, pid_turn, forword);
+
 }

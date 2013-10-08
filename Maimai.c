@@ -15,7 +15,7 @@ void Maimai_store(Maimai* this, int run_time){
 
 	//4msec周期で輝度値を取得し配列に格納
 	this->light_value[this->index]  = LightSensor_getBrightness(this->lightSensor);
-	this->index++;
+	(this->index)++;
 	if(this->index == NUM)	this->index = 0;
 }
 
@@ -34,7 +34,7 @@ U16 Maimai_calc(Maimai* this){
 		if(max < this->light_value[i])	max = (float)this->light_value[i];
 	}
 	sub = max - min;
-	if(sub > 255) sub = 255;
+	//if(sub > 255) sub = 255;
 	k = (1.0382E-3 * max - 6.3295E-1) * min + 1.1024E+2;
 	
 	luminance = sub / k * 100;

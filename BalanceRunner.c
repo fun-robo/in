@@ -108,22 +108,22 @@ void NonBalanceRunner_run(BalanceRunner* this, int turn, int forward)
 	signed char pwm_l;		// 左モータPWM出力値
 	signed char pwm_r;		// 右モータPWM出力値
 
-	
+
 	// 最初だけ、倒立振子制御を初期化とモータエンコーダのリセットを行う
 	if(! this->isInitialized)
 	{
-	
+
 		// モータの回転角度をリセットする
 		Motor_resetAngle(this->leftMotor);
 		Motor_resetAngle(this->rightMotor);
-	
+
 		// 初期化済にする
 		this->isInitialized = TRUE;
 	}
 
 	pwm_l = turn / 2 + forward;
 	pwm_r = -1 * turn / 2 + forward;
-	
+
 	Motor_rotate(this->leftMotor,pwm_l);
 	Motor_rotate(this->rightMotor,pwm_r);
 }

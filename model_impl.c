@@ -4,23 +4,24 @@
 
 #include "LineTracer.h"
 #include "UI.h"
-#include "ColorJudgement.h"
 #include "BalanceRunner.h"
 #include "TouchSensor.h"
 #include "LightSensor.h"
 #include "GyroSensor.h"
 #include "Motor.h"
-#include "GarageIn.h"
-#include "Basic.h"
-#include "LookUpGate.h"
-#include "LookUpRunner.h"
-#include "LineReturn.h"
 #include "Maimai.h"
+#include "Basic.h"
+#include "DistMeasure.h"
+#include "LookUpGate.h"
 #include "TailRunner.h"
 
 #include "kernel.h"
 #include "kernel_id.h"
 #include "ecrobot_interface.h"
+
+typedef enum Zone {
+		BASIC_RUN, LOOKUPGATE_RUN, GARAGE_IN,
+} Zone;
 
 // オブジェクトを静的に確保する
 LineTracer 	lineTracer;
@@ -31,14 +32,13 @@ TouchSensor 	touchSensor;
 LightSensor 	lightSensor;
 GyroSensor 	gyroSensor;
 Motor 		leftMotor, rightMotor, tailMotor;
-GarageIn	garageIn;
-Basic		basic;
-LookUpGate lookUpGate;
-LookUpRunner lookUpRunner;
 SonarSensor sonarSensor;
 Maimai maimai;
-LineReturn	lineReturn;
+Basic basic;
+DistMeasure distMeasure;
+LookUpGate lookUpGate;
 TailRunner tailRunner;
+// LineReturn	lineReturn;
 
 void ecrobot_device_initialize();
 void ecrobot_device_terminate();
@@ -49,8 +49,14 @@ void ecrobot_init();
 
 TASK(TaskMain)
 {
+	//定数宣言部
+	//const U32 SOUND[8] = {523,587,659,698,783,880,987,1046}; //オクターブ4 ド..シ オクターブ5 ド
 	//変数宣言部
 	int run_time = 0;
+	U16 bright = 0;
+	//unsigned char bright_15_8 = 0;
+	//unsigned char bright_7_0 = 0;
+	int zone = BASIC_RUN; //コース中のどこのゾーン
 
 	//デバイスの初期化
 	ecrobot_device_initialize();
@@ -61,62 +67,36 @@ TASK(TaskMain)
 	
 	// UIに開始待ちを依頼する
 	UI_waitStart(&ui);
+	Motor_tailControl(&tailMotor, TAIL_ANGLE_DRIVE);
 
-	char phase = 0;
-	int runtime1 = 0;
 	// 4ms周期で、ライントレーサにトレース走行を依頼する
-	while(1)
-	{
-		if(UI_isEmergency(&ui))	break;
+	 while(1)
+	 {
+	 	if(UI_isEmergency(&ui))	break;
+	 	Maimai_store(&maimai, run_time);
 
-
-		Maimai_store(&maimai, run_time);
-
-		switch(phase){
-			case 0:	
-				LineTracer_trace(&lineTracer, 50, 1);
-				if(runtime1 > 2000){//goalしたら
-					ecrobot_sound_tone(349, 100, 100);
-					phase = 1;
-					runtime1 = 0;
+		switch (zone) {
+			case BASIC_RUN:
+				Basic_run(&basic);
+				if (Basic_getCurPhase(&basic) == BASIC_GOAL) {
+				 	zone = LOOKUPGATE_RUN;
 				}
-				runtime1 += 4;
-				break;
-			case 1:	
-
+			break;
+			case LOOKUPGATE_RUN:
 				if(LookUpGate_run(&lookUpGate)){
-					phase = 2;
+					zone = GARAGE_IN;
 				}
-				break;
-			case 2:	
-				TailRunner_run(&tailRunner, 20, 1);
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			default:break;
+			break;
 		}
 
-		run_time+=4;
+		//bright = LineTracer_getBright(&lineTracer);
+		
 		systick_wait_ms(4);
-
-		//ディスプレイ
-		//gyro = LightSensor_getBrightness(&lightSensor);//ジャイロセンサーの値を代入する	
-		//gyro = GyroSensor_getAngularVelocity(&gyroSensor);
-
-		//display_clear(0);
-		//display_goto_xy(0,1);
-		//display_string("sub=");
-		//display_int(suba,1);
-		//display_update();
+		run_time+=4;
 		
 		//ロギングする
-		ecrobot_bt_data_logger(0, 0);
+		ecrobot_bt_data_logger(Basic_getCurPhase(&basic), 0);
+		//ecrobot_bt_data_logger( ,bright);
 	}
 
 }
@@ -130,9 +110,8 @@ void ecrobot_device_initialize()
 	// ⇒　光センサ赤色LEDをONにする
 	ecrobot_set_light_sensor_active(NXT_PORT_S3);
 	if(ecrobot_get_bt_status() == BT_NO_INIT){
-		ecrobot_set_bt_device_name("FUNROBO");
+		ecrobot_set_bt_device_name("ET025");
 	}
-	ecrobot_init_sonar_sensor(NXT_PORT_S2);
 	ecrobot_init_bt_slave("LEJOS-OSEK");
 }
 
@@ -169,22 +148,14 @@ void ecrobot_link(){
 	ui.sonarSensor = &sonarSensor;
 	ui.maimai	   = &maimai;
 
-	colorJudgement.lightSensor = &lightSensor;
-
 	balanceRunner.gyroSensor   = &gyroSensor;
 	balanceRunner.leftMotor    = &leftMotor;
 	balanceRunner.rightMotor   = &rightMotor;
 
-	garageIn.leftMotor		  = &leftMotor;
-	garageIn.rightMotor		  = &rightMotor;
-	garageIn.tailMotor       = &tailMotor;
+	basic.lineTracer = &lineTracer;
+	basic.distMeasure = &distMeasure;
 
-	basic.leftMotor			  = &leftMotor;
-	basic.rightMotor		  = &rightMotor;
-	basic.gyroSensor		  = &gyroSensor;
-	basic.lineTracer		  = &lineTracer;
-	basic.lightSensor         = &lightSensor;
-	basic.ui				  = &ui;
+	distMeasure.rightMotor = &rightMotor;
 
 	lookUpGate.tailRunner = &tailRunner;
 	lookUpGate.sonarSensor = &sonarSensor;
@@ -192,28 +163,18 @@ void ecrobot_link(){
 	lookUpGate.rightMotor = &rightMotor;
 	lookUpGate.leftMotor = &leftMotor;
 
-	lookUpRunner.gyroSensor = &gyroSensor;
-	lookUpRunner.leftMotor = &leftMotor;
-	lookUpRunner.rightMotor = &rightMotor;
-	lookUpRunner.tailMotor = &tailMotor;
-
-	lineReturn.lightSensor = &lightSensor;
-	lineReturn.balanceRunner = &balanceRunner;
-	lineReturn.lineTracer = &lineTracer;
-
-	maimai.lightSensor = &lightSensor;
-
 	tailRunner.tailMotor = &tailMotor;
 	tailRunner.lineTracer = &lineTracer;
 	tailRunner.gyroSensor = &gyroSensor;
 	tailRunner.balanceRunner = &balanceRunner;
+
+	maimai.lightSensor = &lightSensor;
 }
 
 void ecrobot_init(){
 	// 各オブジェクトを初期化する
 	LineTracer_init(&lineTracer);
 	UI_init(&ui);
-	ColorJudgement_init(&colorJudgement);
 	BalanceRunner_init(&balanceRunner);
 	TouchSensor_init(&touchSensor, NXT_PORT_S4);
 	LightSensor_init(&lightSensor, NXT_PORT_S3);
@@ -221,13 +182,11 @@ void ecrobot_init(){
 	Motor_init(&leftMotor, NXT_PORT_C);
 	Motor_init(&rightMotor, NXT_PORT_B);
 	Motor_init(&tailMotor, NXT_PORT_A);
-	Basic_init(&basic);
 	SonarSensor_init(&sonarSensor, NXT_PORT_S2);
-	LookUpGate_init(&lookUpGate);
-	LookUpRunner_init(&lookUpRunner);
-	LineReturn_init(&lineReturn);
 	Maimai_init(&maimai);
+	DistMeasure_init(&distMeasure);
+	LookUpGate_init(&lookUpGate);
 	TailRunner_init(&tailRunner);
+	Basic_init(&basic);
 }
-
 

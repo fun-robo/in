@@ -1,32 +1,24 @@
+#if !defined(INCLUDED_BASIC_H_)
+#define INCLUDED_BASIC_H_
 
-#if !defined(Basic__INCLUDED_)
-#define Basic__INCLUDED_
-
-#include "GyroSensor.h"
 #include "LineTracer.h"
-#include "UI.h"
+#include "DistMeasure.h"
+
+typedef enum Basic_gate {
+		BASIC_START, SLOPE_TOP, GATE_ONE, GATE_TWO, GATE_THREE, GATE_FOUR, BASIC_GOAL,
+} Basic_gate;
 
 typedef struct Basic
 {
-	Motor *rightMotor;
-	Motor *leftMotor;
-	GyroSensor *gyroSensor;
 	LineTracer *lineTracer;
-	LightSensor *lightSensor;
-	UI *ui;
-	int run_time, speed;
-	int light;
-	int ave;
-	int light_ave[125];
-	int i;
-	int j;
-
-	//unsigned int angleR,angleL;
-
+	DistMeasure *distMeasure;
+	int run_time;
+	int speed;
+	int cur_phase;
+	
 } Basic;
 
 void Basic_init(Basic *this);
-void Basic_run_in(Basic *this);
-int Basic_GetAVE(Basic *this);
+void Basic_run(Basic *this);
+int Basic_getCurPhase(Basic *this);
 #endif
-
