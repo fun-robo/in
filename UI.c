@@ -32,8 +32,12 @@ void UI_waitStart(UI* this)
 			Motor_tailControl(this->tailMotor, 85);
 		else
 			Motor_tailControl(this->tailMotor, TAIL_ANGLE_STAND_UP);
+		if(flag_touch >= 6){
+			RunMode_change(this->runMode, LINE_TRACE);
+			ecrobot_set_light_sensor_active(this->lightSensor->inputPort);
+		}
 		//点滅の輝度値を格納する
-		Maimai_store(this->maimai, run_time);
+		if(this->runMode->run_mode) Maimai_store(this->maimai, run_time);
 
 		if(TouchSensor_isPressed(this->touchSensor))	count++;
 		else	count = 0;
@@ -47,7 +51,7 @@ void UI_waitStart(UI* this)
 			//2度目のボタン押下でスタート
 			else if(flag_touch == 1){
 				ecrobot_sound_tone(349, 100, 100);
-				this->lineTracer->TARGET = (F32)((white + Maimai_calc(this->maimai)) / 2);
+				this->lineTracer->MAIMAI_TARGET = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 2;
 			}
 			//2度目のボタン押下でスタート
@@ -74,6 +78,16 @@ void UI_waitStart(UI* this)
 				this->lineTracer->TARGET_tailHalf = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 6;
 			}
+			else if(flag_touch == 6){
+				ecrobot_sound_tone(261, 100, 100);
+				white = LightSensor_getBrightness(this->lightSensor);
+				flag_touch = 7;
+			}
+			else if(flag_touch == 7){
+				ecrobot_sound_tone(349, 100, 100);
+				this->lineTracer->TARGET = (F32)((white +LightSensor_getBrightness(this->lightSensor)) / 2);
+				flag_touch = 8;
+			}
 			else{
 				Motor_tailControl(this->tailMotor, TAIL_ANGLE_DRIVE);
 				break;
@@ -97,7 +111,7 @@ void UI_waitStart(UI* this)
 			display_int(white,1);
 		}else if(flag_touch == 2){
 			display_string("black=");
-			display_int(this->lineTracer->TARGET*2 - white,1);
+			display_int(this->lineTracer->MAIMAI_TARGET*2 - white,1);
 		}else if(flag_touch == 3){
 			display_string("white=");
 			display_int(white,1);
@@ -110,6 +124,12 @@ void UI_waitStart(UI* this)
 		}else if(flag_touch == 6){
 			display_string("black=");
 			display_int(this->lineTracer->TARGET_tailHalf*2 - white,1);
+		}else if(flag_touch == 7){
+			display_string("white=");
+			display_int(white,1);
+		}else if(flag_touch == 8){
+			display_string("black=");
+			display_int(this->lineTracer->TARGET*2 - white,1);
 		}
 		display_update();
 

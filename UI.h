@@ -14,6 +14,7 @@
 #include "SonarSensor.h"
 #include "LineTracer.h"
 #include "Maimai.h"
+#include "RunMode.h"
 
 
 #define TAIL_ANGLE_STAND_UP 110//103/* 完全停止時の角度[度] */
@@ -29,6 +30,7 @@ typedef struct UI
 	SonarSensor *sonarSensor;
 	LineTracer  *lineTracer;
 	Maimai		*maimai;
+	RunMode     *runMode;
 	BOOL run_mode;
 	char rx_buf[BT_MAX_RX_BUF_SIZE];
   char blackTailHalf;

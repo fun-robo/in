@@ -16,6 +16,7 @@
 #include "TailRunner.h"
 #include "GarageIn.h"
 #include "GrayDetector.h"
+#include "RunMode.h"
 
 #include "kernel.h"
 #include "kernel_id.h"
@@ -42,6 +43,7 @@ LookUpGate lookUpGate;
 TailRunner tailRunner;
 GarageIn garageIn;
 GrayDetector grayDetector;
+RunMode runMode;
 // LineReturn	lineReturn;
 
 void ecrobot_device_initialize();
@@ -77,14 +79,15 @@ TASK(TaskMain)
 	 while(1)
 	 {
 	 	if(UI_isEmergency(&ui))	break;
-	 	Maimai_store(&maimai, run_time);
+	 	if(runMode.run_mode) Maimai_store(&maimai, run_time);
 
 		switch (zone) {
 			case BASIC_RUN:
 				Basic_run(&basic);
 				if (Basic_getCurPhase(&basic) == BASIC_GOAL) {
 				 	zone = LOOKUPGATE_RUN;
-				 	//zone = GARAGE_IN;
+				 	RunMode_change(&runMode,MAIMAI);
+				 	LineTracer_changePID(&lineTracer,0.6,0.08,0.124,LineTracer_getMaimaiTarget(&lineTracer));
 				}
 			break;
 			case LOOKUPGATE_RUN:
@@ -155,6 +158,7 @@ void ecrobot_link(){
 	lineTracer.balanceRunner   = &balanceRunner;
 	lineTracer.lightSensor	     = &lightSensor;
 	lineTracer.maimai            = &maimai;
+	lineTracer.runMode		=&runMode;
 
 	ui.touchSensor		   = &touchSensor;
 	ui.tailMotor		   = &tailMotor;
@@ -163,6 +167,7 @@ void ecrobot_link(){
 	ui.lineTracer = &lineTracer;
 	ui.sonarSensor = &sonarSensor;
 	ui.maimai	   = &maimai;
+	ui.runMode	   = &runMode;
 
 	balanceRunner.gyroSensor   = &gyroSensor;
 	balanceRunner.leftMotor    = &leftMotor;
@@ -214,5 +219,6 @@ void ecrobot_init(){
 	Basic_init(&basic);
 	GarageIn_init(&garageIn);
 	GrayDetector_init(&grayDetector);
+	RunMode_init(&runMode);
 }
 

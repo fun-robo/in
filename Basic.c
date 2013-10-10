@@ -57,7 +57,7 @@ void Basic_run(Basic *this)
 		case BASIC_GOAL:
 		 	break;
 		case EM:
-			if (DistMeasure_getDistance(this->distMeasure) > 200) {
+			if (DistMeasure_getDistance(this->distMeasure) > 4951) {
 				ecrobot_sound_tone(SOUND[5],235,100);
 				LineTracer_changePID(this->lineTracer,0.66,0.08,0.124,
 							LineTracer_getTarget(this->lineTracer)*4/3);

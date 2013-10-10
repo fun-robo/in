@@ -27,19 +27,33 @@ void LineTracer_init(LineTracer* this)
 	this->diff[1] = 0;
 	this->integral = 0;
 
-	this->KP = 0.6;//試走会0.6;//0.66;//0.6;//0.66;
-	this->KI = 0.08;//試走会0.08;//0.07;//0.08;//0.07;
-	this->KD = 0.124;//試走会0.12;//0.1;//0.07;
+	if(this->runMode->run_mode){
+		this->KP = 0.6;//試走会0.6;//0.66;//0.6;//0.66;
+		this->KI = 0.08;//試走会0.08;//0.07;//0.08;//0.07;
+		this->KD = 0.124;//試走会0.12;//0.1;//0.07;
+	} else{
+		this->KP = 0.8;
+		this->KI = 0.07;
+		this->KD = 0.06;
+	}
 	this->TARGET = 120;
-
+	this->MAIMAI_TARGET = 0;
 	this->bright = 0;
 }
 
 // ライントレースを行う
 void LineTracer_trace(LineTracer* this, int forword, int run_time)
 {
-	this->bright = Maimai_calc(this->maimai);
-	int pid_turn = run_time * (int)pid(this->bright, this->TARGET, this);
+	int pid_turn;
+	if(this->runMode->run_mode){
+		this->bright = Maimai_calc(this->maimai);
+		pid_turn = run_time * (int)pid(this->bright, this->MAIMAI_TARGET, this);
+	}
+	else {
+		this->bright = LightSensor_getBrightness(this->lightSensor);
+		run_time = (-1) * run_time;
+		pid_turn = run_time * (int)pid(this->bright, this->TARGET, this);
+	}
 
 	//倒立走行を行う
 	BalanceRunner_run(this->balanceRunner, pid_turn, forword);
@@ -95,4 +109,9 @@ void LineTracer_trace_nonbalance(LineTracer* this, int forword, int run_time)
 
 	NonBalanceRunner_run(this->balanceRunner, pid_turn, forword);
 
+}
+
+U16 LineTracer_getMaimaiTarget(LineTracer* this)
+{
+	return this->MAIMAI_TARGET;
 }
