@@ -12,7 +12,7 @@ static int UI_remoteStart(UI* this);
 
 void UI_init(UI* this)
 {
-
+	this->blackTailHalf = 0;
 }
 
 void UI_waitStart(UI* this)
@@ -28,6 +28,8 @@ void UI_waitStart(UI* this)
 		// 尻尾を立てて完全停止状態にする
 		if(flag_touch < 4 && flag_touch > 1)
 			Motor_tailControl(this->tailMotor, 67);
+		else if(flag_touch < 6 && flag_touch > 3)
+			Motor_tailControl(this->tailMotor, 85);
 		else
 			Motor_tailControl(this->tailMotor, TAIL_ANGLE_STAND_UP);
 		//点滅の輝度値を格納する
@@ -60,6 +62,18 @@ void UI_waitStart(UI* this)
 				this->lineTracer->TARGET_tail = (F32)((white + Maimai_calc(this->maimai)) / 2);
 				flag_touch = 4;
 			}
+			else if(flag_touch == 4){
+				ecrobot_sound_tone(261, 100, 100);
+				white = Maimai_calc(this->maimai);
+				flag_touch = 5;
+			}
+			//2度目のボタン押下でスタート
+			else if(flag_touch == 5){
+				ecrobot_sound_tone(349, 100, 100);
+				this->blackTailHalf = Maimai_calc(this->maimai);
+				this->lineTracer->TARGET_tailHalf = (F32)((white + Maimai_calc(this->maimai)) / 2);
+				flag_touch = 6;
+			}
 			else{
 				Motor_tailControl(this->tailMotor, TAIL_ANGLE_DRIVE);
 				break;
@@ -89,7 +103,13 @@ void UI_waitStart(UI* this)
 			display_int(white,1);
 		}else if(flag_touch == 4){
 			display_string("black=");
-			display_int(this->lineTracer->TARGET*2 - white,1);
+			display_int(this->lineTracer->TARGET_tail*2 - white,1);
+		}else if(flag_touch == 5){
+			display_string("white=");
+			display_int(white,1);
+		}else if(flag_touch == 6){
+			display_string("black=");
+			display_int(this->lineTracer->TARGET_tailHalf*2 - white,1);
 		}
 		display_update();
 

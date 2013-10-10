@@ -42,5 +42,5 @@ build/model_impl.o: model_impl.c LineTracer.h ColorJudgement.h Color.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
   BalanceRunner.h Direction.h GyroSensor.h Motor.h Maimai.h UI.h \
-  TouchSensor.h SonarSensor.h GarageIn.h Basic.h LookUpGate.h \
-  TailRunner.h LookUpRunner.h LineReturn.h kernel_id.h
+  TouchSensor.h SonarSensor.h Basic.h DistMeasure.h LookUpGate.h \
+  TailRunner.h GarageIn.h GrayDetector.h kernel_id.h

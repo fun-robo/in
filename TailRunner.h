@@ -33,6 +33,7 @@ void TailRunner_init(TailRunner* this);
 void TailRunner_run(TailRunner* this, int forward, int turn);
 void TailRunner_run_nonlinetrace(TailRunner* this, int turn, int forward);
 void TailRunner_set_tailMotor(TailRunner* this);
+void TailRunner_changeTailAngle(TailRunner* this, char angle);
 
 #endif /*!defined(TAIL__INCLUDED_)*/
 

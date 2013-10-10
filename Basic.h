@@ -5,7 +5,7 @@
 #include "DistMeasure.h"
 
 typedef enum Basic_gate {
-		BASIC_START, SLOPE_TOP, GATE_ONE, GATE_TWO, GATE_THREE, GATE_FOUR, BASIC_GOAL,
+		BASIC_START, SLOPE_TOP, GATE_ONE, GATE_TWO, GATE_THREE, GATE_FOUR, BASIC_GOAL, EM,
 } Basic_gate;
 
 typedef struct Basic

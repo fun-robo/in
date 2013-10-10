@@ -1,5 +1,5 @@
-build/Basic.o: Basic.c Basic.h GyroSensor.h \
-  ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
+build/Basic.o: Basic.c Basic.h LineTracer.h ColorJudgement.h Color.h \
+  LightSensor.h ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/mytypes.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/interrupts.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/aic.h \
@@ -41,17 +41,4 @@ build/Basic.o: Basic.c Basic.h GyroSensor.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/osek.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
-  LineTracer.h ColorJudgement.h Color.h LightSensor.h BalanceRunner.h \
-  Direction.h Motor.h Maimai.h UI.h TouchSensor.h SonarSensor.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/stdlib.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/_ansi.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/newlib.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/sys/config.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/machine/ieeefp.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/include/stddef.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/sys/reent.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/_ansi.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/sys/_types.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/sys/lock.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/machine/stdlib.h \
-  /cygdrive/C/cygwin/GNUARM/bin/../lib/gcc/arm-elf/4.0.2/../../../../arm-elf/sys-include/alloca.h
+  BalanceRunner.h Direction.h GyroSensor.h Motor.h Maimai.h DistMeasure.h

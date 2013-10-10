@@ -1,4 +1,4 @@
-build/GarageIn.o: GarageIn.c GarageIn.h TailRunner.h Motor.h \
+build/DistMeasure.o: DistMeasure.c DistMeasure.h Motor.h \
   ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/mytypes.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/interrupts.h \
@@ -40,7 +40,4 @@ build/GarageIn.o: GarageIn.c GarageIn.h TailRunner.h Motor.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/cpu_defs.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/osek.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
-  ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
-  LineTracer.h ColorJudgement.h Color.h LightSensor.h BalanceRunner.h \
-  Direction.h GyroSensor.h Maimai.h GrayDetector.h UI.h TouchSensor.h \
-  SonarSensor.h
+  ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h

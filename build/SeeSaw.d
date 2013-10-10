@@ -1,4 +1,4 @@
-build/SeeSaw.o: SeeSaw.c SeeSaw.h BalanceRunner.h \
+build/SeeSaw.o: SeeSaw.c SeeSaw.h Motor.h \
   ../nxtOSEK/ecrobot/../ecrobot/c/ecrobot_interface.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/mytypes.h \
   ../nxtOSEK/ecrobot/../lejos_nxj/src//nxtvm/platform/nxt/interrupts.h \
@@ -41,5 +41,5 @@ build/SeeSaw.o: SeeSaw.c SeeSaw.h BalanceRunner.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/osek.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
-  Direction.h GyroSensor.h Motor.h LineTracer.h ColorJudgement.h Color.h \
-  LightSensor.h Maimai.h
+  GyroSensor.h LineTracer.h ColorJudgement.h Color.h LightSensor.h \
+  BalanceRunner.h Direction.h Maimai.h Straight.h

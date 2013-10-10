@@ -14,6 +14,8 @@
 #include "DistMeasure.h"
 #include "LookUpGate.h"
 #include "TailRunner.h"
+#include "GarageIn.h"
+#include "GrayDetector.h"
 
 #include "kernel.h"
 #include "kernel_id.h"
@@ -38,6 +40,8 @@ Basic basic;
 DistMeasure distMeasure;
 LookUpGate lookUpGate;
 TailRunner tailRunner;
+GarageIn garageIn;
+GrayDetector grayDetector;
 // LineReturn	lineReturn;
 
 void ecrobot_device_initialize();
@@ -53,9 +57,9 @@ TASK(TaskMain)
 	//const U32 SOUND[8] = {523,587,659,698,783,880,987,1046}; //オクターブ4 ド..シ オクターブ5 ド
 	//変数宣言部
 	int run_time = 0;
+	unsigned char bright_15_8 = 0;
+	unsigned char bright_7_0 = 0;
 	U16 bright = 0;
-	//unsigned char bright_15_8 = 0;
-	//unsigned char bright_7_0 = 0;
 	int zone = BASIC_RUN; //コース中のどこのゾーン
 
 	//デバイスの初期化
@@ -80,6 +84,7 @@ TASK(TaskMain)
 				Basic_run(&basic);
 				if (Basic_getCurPhase(&basic) == BASIC_GOAL) {
 				 	zone = LOOKUPGATE_RUN;
+				 	//zone = GARAGE_IN;
 				}
 			break;
 			case LOOKUPGATE_RUN:
@@ -87,16 +92,27 @@ TASK(TaskMain)
 					zone = GARAGE_IN;
 				}
 			break;
+			case GARAGE_IN:
+				GarageIn_run(&garageIn);
+			break;
 		}
 
-		//bright = LineTracer_getBright(&lineTracer);
-		
+		bright_15_8 = garageIn.phase;
+		bright = LineTracer_getBright(&lineTracer);
+		bright_7_0 = bright;
+
 		systick_wait_ms(4);
 		run_time+=4;
 		
+		display_clear(0);
+		display_goto_xy(0,1);
+		display_string("black=");
+		display_int(ui.blackTailHalf,1);
+		display_update();
+
 		//ロギングする
-		ecrobot_bt_data_logger(Basic_getCurPhase(&basic), 0);
-		//ecrobot_bt_data_logger( ,bright);
+		//ecrobot_bt_data_logger(Basic_getCurPhase(&basic), 0);
+		ecrobot_bt_data_logger(bright_15_8 ,bright_7_0);
 	}
 
 }
@@ -168,7 +184,15 @@ void ecrobot_link(){
 	tailRunner.gyroSensor = &gyroSensor;
 	tailRunner.balanceRunner = &balanceRunner;
 
+	garageIn.tailRunner = &tailRunner;
+	garageIn.lineTracer = &lineTracer;
+	garageIn.grayDetector = &grayDetector;
+	garageIn.rightMotor = &rightMotor;
+
 	maimai.lightSensor = &lightSensor;
+
+	grayDetector.lineTracer = &lineTracer;
+	grayDetector.ui = &ui;
 }
 
 void ecrobot_init(){
@@ -188,5 +212,7 @@ void ecrobot_init(){
 	LookUpGate_init(&lookUpGate);
 	TailRunner_init(&tailRunner);
 	Basic_init(&basic);
+	GarageIn_init(&garageIn);
+	GrayDetector_init(&grayDetector);
 }
 

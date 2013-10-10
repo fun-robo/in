@@ -27,8 +27,9 @@ typedef struct LineTracer
 	F32 KP;
 	F32 KI;
 	F32 KD;
-    F32 TARGET;
-    F32 TARGET_tail;
+  F32 TARGET;
+  F32 TARGET_tail;
+  F32 TARGET_tailHalf;
 	U16 bright;
 } LineTracer;
 

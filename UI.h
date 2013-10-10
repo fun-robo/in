@@ -31,6 +31,7 @@ typedef struct UI
 	Maimai		*maimai;
 	BOOL run_mode;
 	char rx_buf[BT_MAX_RX_BUF_SIZE];
+  char blackTailHalf;
 } UI;
 
 // 公開操作

@@ -17,7 +17,6 @@
 #define DELTA_T 0.004
 
 // 非公開操作
-static DIRECTION LineTracer_calcDirection(LineTracer* this, COLOR color);
 static F32 pid(U16 sensor_val, U16 target_val,LineTracer *this);
 
 // 初期化する
@@ -58,21 +57,6 @@ void LineTracer_changePID(LineTracer* this, F32 p, F32 i, F32 d, F32 target)
 F32 LineTracer_getTarget(LineTracer* this){
 	return this->TARGET;
 } 
-
-static DIRECTION LineTracer_calcDirection(LineTracer* this, COLOR color)
-{
-	// ラインの左エッジ走行を前提として、
-	if(color == BLACK)
-	{
-		// 路面の色が黒ならばライン上と判断して左へ旋回
-		return LEFT;
-	}
-	else
-	{
-		// 路面の色が黒以外ならばライン外と判断して右へ旋回
-		return RIGHT;
-	}
-}
 
 static F32 pid(U16 sensor_val, U16 target_val,LineTracer *this)
 {
