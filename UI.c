@@ -37,8 +37,12 @@ void UI_waitStart(UI* this)
 			ecrobot_set_light_sensor_active(this->lightSensor->inputPort);
 		}
 		//点滅の輝度値を格納する
-		if(this->runMode->run_mode) Maimai_store(this->maimai, run_time);
-
+		if(this->runMode->run_mode){
+			Maimai_store(this->maimai, run_time);
+			LineTracer_changePID(this->lineTracer,0.6,0.08,0.124,LineTracer_getMaimaiTarget(this->lineTracer));
+		} else{
+			LineTracer_changePID(this->lineTracer,0.8,0.07,0.06,LineTracer_getTarget(this->lineTracer));
+		}
 		if(TouchSensor_isPressed(this->touchSensor))	count++;
 		else	count = 0;
 		if(count == 5){

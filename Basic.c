@@ -3,8 +3,8 @@
 void Basic_init(Basic *this)
 {
 	this->run_time = 0;
-	this->speed = 30;
-	this->cur_phase = 7;
+	this->speed = 120;
+	this->cur_phase = BASIC_START;
 }
 
 void Basic_run(Basic *this)
@@ -17,14 +17,14 @@ void Basic_run(Basic *this)
 			if(DistMeasure_getDistance(this->distMeasure) > 3350) {
 				ecrobot_sound_tone(SOUND[0], 150, 100);
 				this->cur_phase = SLOPE_TOP;
-				//this->speed = 100;
+				this->speed = 100;
 			}
 			break;
 		case SLOPE_TOP: //第一チェックポイント
-			if(DistMeasure_getDistance(this->distMeasure) > 6100) {
+			if(DistMeasure_getDistance(this->distMeasure) > 3350 + 2750) {
 				ecrobot_sound_tone(SOUND[1], 150, 100);
 				this->cur_phase = GATE_ONE;
-				//this->speed = 80;
+				this->speed = 120;
 			}
 			break;
 		case GATE_ONE: //第２チェックポイント
@@ -43,6 +43,7 @@ void Basic_run(Basic *this)
 			if (DistMeasure_getDistance(this->distMeasure) > 18900) {
 				ecrobot_sound_tone(SOUND[4],150,100);
 				this->cur_phase = GATE_FOUR;
+				this->speed = 100;
 			} 
 			break;
 		case GATE_FOUR: //Basicゴール
@@ -50,7 +51,6 @@ void Basic_run(Basic *this)
 				ecrobot_sound_tone(SOUND[5],250,100);
 				LineTracer_changePID(this->lineTracer,0.66,0.08,0.124,
 							LineTracer_getTarget(this->lineTracer)*4/3);
-				this->speed = 60;
 				this->cur_phase = BASIC_GOAL;
 			}
 			break;

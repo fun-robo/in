@@ -202,6 +202,7 @@ void ecrobot_link(){
 
 void ecrobot_init(){
 	// 各オブジェクトを初期化する
+	RunMode_init(&runMode);
 	LineTracer_init(&lineTracer);
 	UI_init(&ui);
 	BalanceRunner_init(&balanceRunner);
@@ -219,6 +220,5 @@ void ecrobot_init(){
 	Basic_init(&basic);
 	GarageIn_init(&garageIn);
 	GrayDetector_init(&grayDetector);
-	RunMode_init(&runMode);
 }
 
