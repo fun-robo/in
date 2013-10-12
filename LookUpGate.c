@@ -94,10 +94,13 @@ BOOL LookUpGate_run(LookUpGate* this)
 			break;*/
 		case 8:
 			TailRunner_run_nonlinetrace(this->tailRunner, this->turn * 2, -20);
-			if(angleDiffL < 0 && angleDiffR < 0){
-				this->phase = 9;
-				this->runtime = 0;
-				this->flag = TRUE;
+			if(angleDiffR < 0){
+		//		Motor_rotate(this->rightMotor, 0);
+				if(angleDiffL < 0){
+					this->phase = 9;
+					this->runtime = 0;
+					this->flag = TRUE;
+				}
 			}
 			if(angleDiffR < 0 && angleDiffR > -10){
 				ecrobot_sound_tone(300, 100, 100);

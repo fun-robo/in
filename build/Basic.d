@@ -41,4 +41,5 @@ build/Basic.o: Basic.c Basic.h LineTracer.h ColorJudgement.h Color.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/osek.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
-  BalanceRunner.h Direction.h GyroSensor.h Motor.h Maimai.h DistMeasure.h
+  BalanceRunner.h Direction.h GyroSensor.h Motor.h Maimai.h RunMode.h \
+  DistMeasure.h

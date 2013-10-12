@@ -42,4 +42,4 @@ build/UI.o: UI.c UI.h TouchSensor.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
   Motor.h LightSensor.h SonarSensor.h LineTracer.h ColorJudgement.h \
-  Color.h BalanceRunner.h Direction.h GyroSensor.h Maimai.h
+  Color.h BalanceRunner.h Direction.h GyroSensor.h Maimai.h RunMode.h

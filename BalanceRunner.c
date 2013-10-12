@@ -121,7 +121,7 @@ void NonBalanceRunner_run(BalanceRunner* this, int turn, int forward)
 		this->isInitialized = TRUE;
 	}
 
-	pwm_l = (turn / 2 + forward ) * 1.05;
+	pwm_l = (turn / 2 + forward ) * 1.08;
 	pwm_r = -1 * turn / 2 + forward;
 
 	Motor_rotate(this->leftMotor,pwm_l);

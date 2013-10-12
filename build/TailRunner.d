@@ -42,4 +42,4 @@ build/TailRunner.o: TailRunner.c TailRunner.h Motor.h \
   ../nxtOSEK/ecrobot/../toppers_osek/include/t_stddef.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
   LineTracer.h ColorJudgement.h Color.h LightSensor.h BalanceRunner.h \
-  Direction.h GyroSensor.h Maimai.h GyroSensor.c
+  Direction.h GyroSensor.h Maimai.h RunMode.h GyroSensor.c

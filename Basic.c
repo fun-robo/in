@@ -3,8 +3,8 @@
 void Basic_init(Basic *this)
 {
 	this->run_time = 0;
-	this->speed = 120;
-	this->cur_phase = BASIC_START;
+	this->speed = 30;
+	this->cur_phase = EM;
 }
 
 void Basic_run(Basic *this)
@@ -57,7 +57,7 @@ void Basic_run(Basic *this)
 		case BASIC_GOAL:
 		 	break;
 		case EM:
-			if (DistMeasure_getDistance(this->distMeasure) > 4951) {
+			if (DistMeasure_getDistance(this->distMeasure) > 200) {
 				ecrobot_sound_tone(SOUND[5],235,100);
 				LineTracer_changePID(this->lineTracer,0.66,0.08,0.124,
 							LineTracer_getTarget(this->lineTracer)*4/3);

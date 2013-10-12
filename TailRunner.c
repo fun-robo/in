@@ -48,10 +48,10 @@ void TailRunner_set_tailMotor(TailRunner* this)
       this->runtime += 4;
       break;
     case 1: 
-      GyroSensor_changeOffset(this->gyroSensor, GYRO_OFFSET-10);
+      GyroSensor_changeOffset(this->gyroSensor, GYRO_OFFSET-20);
       LineTracer_trace(this->lineTracer, 0, 0);
       TailRunner_changeTailAngle(this, 85);
-      if(this->runtime > 10){//少し進んだら
+      if(this->runtime > 100){//少し進んだら
         ecrobot_sound_tone(349, 100, 100);
         this->phase = 2;
         this->runtime = 0;
@@ -61,11 +61,12 @@ void TailRunner_set_tailMotor(TailRunner* this)
       break;
     case 2:
       TailRunner_changeTailAngle(this, 85 - this->runtime/100);
+      LineTracer_trace_nonbalance(this->lineTracer, 0, 0);
       if(this->runtime >= 1800){//少したったら
         ecrobot_sound_tone(349, 100, 100);
         this->phase = 3;
         this->runtime = 0;
-        LineTracer_changePID(this->lineTracer, 0.74, 0.13, 0.15, get_TARGET_tail(this->lineTracer));
+        LineTracer_changePID(this->lineTracer, 0.7, 0.1, 0.17, get_TARGET_tail(this->lineTracer));
       }
       this->runtime+=4;
       break;

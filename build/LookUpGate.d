@@ -43,4 +43,4 @@ build/LookUpGate.o: LookUpGate.c LookUpGate.h \
   ../nxtOSEK/ecrobot/../toppers_osek/config/at91sam7s-gnu/tool_defs.h \
   TailRunner.h Motor.h LineTracer.h ColorJudgement.h Color.h \
   LightSensor.h BalanceRunner.h Direction.h GyroSensor.h Maimai.h \
-  SonarSensor.h
+  RunMode.h SonarSensor.h
