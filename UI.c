@@ -27,7 +27,7 @@ void UI_waitStart(UI* this)
 	{
 		// 尻尾を立てて完全停止状態にする
 		if(flag_touch < 4 && flag_touch > 1)
-			Motor_tailControl(this->tailMotor, 67);
+			Motor_tailControl(this->tailMotor, 65);
 		else if(flag_touch < 6 && flag_touch > 3)
 			Motor_tailControl(this->tailMotor, 85);
 		else

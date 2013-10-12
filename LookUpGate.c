@@ -20,7 +20,7 @@ BOOL LookUpGate_run(LookUpGate* this)
 	long angleDiffL = Motor_getAngle(this->leftMotor) - this->leftAngle;
 	switch(this->phase){
 		case 0:
-			TailRunner_run(this->tailRunner, 20, 1);
+			TailRunner_run(this->tailRunner, 30, 1);
 			if(SonarSensor_sonarAlert(this->sonarSensor, 25) == 1){
 				this->phase = 1;
 				this->rightAngle = Motor_getAngle(this->rightMotor);
@@ -29,8 +29,8 @@ BOOL LookUpGate_run(LookUpGate* this)
 			}
 			break;
 		case 1:
-			TailRunner_run(this->tailRunner, 20, 1);
-			if(this->runtime > 6000){
+			TailRunner_run(this->tailRunner, 30, 1);
+			if(this->runtime > 2500){
 				this->phase = 2;
 				this->runtime = 0;
 			}
@@ -38,10 +38,10 @@ BOOL LookUpGate_run(LookUpGate* this)
 			break;
 		case 2:
 			TailRunner_run(this->tailRunner, 0, 0);
-			if(this->runtime > 2000){
+			if(this->runtime > 1000){
 				this->phase = 8;
 				this->runtime = 0;
-				this->turn = (int)(((angleDiffR - angleDiffL) * 20)/ (angleDiffR + angleDiffL));
+				this->turn = (int)(((angleDiffR - angleDiffL) * 30)/ (angleDiffR + angleDiffL));
 			}
 			this->runtime += 4;
 			break;
@@ -93,7 +93,7 @@ BOOL LookUpGate_run(LookUpGate* this)
 			this->flag = TRUE;
 			break;*/
 		case 8:
-			TailRunner_run_nonlinetrace(this->tailRunner, this->turn * 2, -20);
+			TailRunner_run_nonlinetrace(this->tailRunner, this->turn * 2, -30);
 			if(angleDiffR < 0){
 		//		Motor_rotate(this->rightMotor, 0);
 				if(angleDiffL < 0){

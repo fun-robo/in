@@ -23,6 +23,7 @@ typedef struct TailRunner
   LineTracer  *lineTracer;
   GyroSensor *gyroSensor;
   BalanceRunner *balanceRunner;
+  Maimai *maimai;
   int runtime;
   char phase;
   char angle;

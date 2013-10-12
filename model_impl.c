@@ -188,6 +188,7 @@ void ecrobot_link(){
 	tailRunner.lineTracer = &lineTracer;
 	tailRunner.gyroSensor = &gyroSensor;
 	tailRunner.balanceRunner = &balanceRunner;
+	tailRunner.maimai = &maimai;
 
 	garageIn.tailRunner = &tailRunner;
 	garageIn.lineTracer = &lineTracer;

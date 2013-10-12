@@ -15,8 +15,8 @@ void GarageIn_run(GarageIn* this)
 	long angleDiffR = Motor_getAngle(this->rightMotor) - this->rightAngle;
 	switch(this->phase){
 		case 0:
-			TailRunner_run(this->tailRunner, 20, 1);
-			if(this->runtime > 15000){
+			TailRunner_run(this->tailRunner, 30, 1);
+			if(this->runtime > 8000){
 				this->phase = 1;
 				this->runtime = 0;
 				ecrobot_sound_tone(1000, 100, 100);
@@ -54,7 +54,7 @@ void GarageIn_run(GarageIn* this)
 			this->runtime += 4;
 			break;
 		case 4:
-			if(angleDiffR > 200){
+			if(angleDiffR > 190){
 				TailRunner_run(this->tailRunner, 0, 0);
 			}else{
 				TailRunner_run(this->tailRunner, 40, 0);

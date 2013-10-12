@@ -19,6 +19,13 @@ void Maimai_store(Maimai* this, int run_time){
 	if(this->index == NUM)	this->index = 0;
 }
 
+void Maimai_setArrayValue(Maimai *this, U16 value){
+	int i;
+	for(i = 0; i < NUM; i++){
+		this->light_value[i] = value;
+	}
+}
+
 //配列内の最大の輝度値と最小の輝度値の差分を出す
 U16 Maimai_calc(Maimai* this){
 	float min = 1000;

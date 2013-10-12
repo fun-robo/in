@@ -17,5 +17,6 @@ typedef struct Maimai
 void Maimai_init(Maimai* this);
 void Maimai_store(Maimai* this, int run_time);
 U16 Maimai_calc(Maimai* this);
+void Maimai_setArrayValue(Maimai *this, U16 value);
 
 #endif /*!defined(EA_6FB55B53_C0F0_4250_B6B0_BC28A0A336D7__INCLUDED_)*/
